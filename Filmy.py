@@ -1,25 +1,22 @@
+import random
+
 class Movie:
-    def __init__ (self, title, year, genre, count_vievs):
+    def __init__ (self, title, year, genre, count_views):
         self.title = title
         self.year = year
         self.genre = genre
-        self.count_vievs = count_vievs
+        self.count_views = count_views
         
-    
-    def play(self, vievs=1):    
-        self.count_vievs += vievs
+    def play(self, views=1):    
+        self.count_views += views
         
-
-    def get_movies(self):
-        print (self.title, self.year, self.genre, self.count_vievs)
-    
 class Series(Movie):
     def __init__ (self, episode, season, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.episode = episode
         self.season = season
 
-movies = [
+database = [
         Movie("Mechaniczna Pomarańcza", "1976", "Dramat", 0),
         Movie("Black Jack", "1996", "Sensacyjny", 0),
         Movie("Cierpienia początkującego programisty", "2022", "Dramat psychologiczny", 0),
@@ -28,7 +25,43 @@ movies = [
         Series("S50", "E99", "Game of Trone", "1986", "Sensacyjny", 0)
 ]
 
-for i in movies:
-    i.play()
-    i.get_movies()
+def generate_views():
+    for _ in range(1, 10):
+        view = random.randint(1, 10)
+        element = random.choice(database)
+        element.play(views=view)
 
+def generate_views_xten ():
+    i=0
+    while i < 10:
+        generate_views()
+        i+1
+
+
+def get_movies():
+    by_title = sorted(database, key=lambda x: x.title)    
+    for element in by_title:
+        generate_views()
+        element.play()
+        if isinstance(element, Movie):
+            print(f"{element.title}, {element.year}, {element.genre}. Ilość wyświetleń: {element.count_views}.")
+
+# Powyżej funkcja isinstance uwzględnia dziedziczenie, więc wyświetla i filmy, i seriale.
+
+def get_series():
+    by_title = sorted(database, key=lambda x: x.title)
+    for element in by_title:
+        generate_views()
+        element.play()
+        if isinstance(element, Series):
+            print(f"Serial: {element.title}, {element.year}, {element.genre}, {element.episode}, {element.season}. Ilość wyświetleń: {element.count_views}.")
+        
+def search ():
+    search = input("Podaj tytuł:")
+    for element in database:
+        if element.title == search:
+            print(f"{element.title}, {element.year}, {element.genre}. Ilość wyświetleń: {element.count_views}.")
+    else:
+        print ("Unknown")
+
+generate_views_xten ()
