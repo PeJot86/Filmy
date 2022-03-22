@@ -39,18 +39,18 @@ def generate_views_xten ():
         i+=1
 
 def get_movies():
+    generate_views_xten()
     by_title = sorted(database, key=lambda x: x.title)    
     for element in by_title:
         element.play()
-        generate_views_xten()
-        if isinstance(element, Movie):
+        if not isinstance(element, Series):
             print(f"{element.title}, {element.year}, {element.genre}. Ilość wyświetleń: {element.count_views}.")
 
 def get_series():
+    generate_views_xten()
     by_title = sorted(database, key=lambda x: x.title)
     for element in by_title:        
-        element.play()
-        generate_views_xten()
+        element.play()        
         if isinstance(element, Series):
             print(f"Serial: {element.title}, {element.year}, {element.genre}, {element.episode}, {element.season}. Ilość wyświetleń: {element.count_views}.")
         
@@ -64,12 +64,8 @@ def search ():
         print ("Unknown")
 
 def top_titles():
-    top=[]
+    generate_views_xten ()
     by_top = sorted(database, key=lambda x: x.count_views)    
-    for element in by_top:
-        element.play()
-        generate_views_xten()
-        if isinstance(element, Movie):
-            top.append ([f"{element.title}, {element.count_views}"])
-    print (top[-1])
+    top = by_top[-1]
+    print (f"Najpopularniejszy dziś: {top.title}, {top.count_views}")
 
