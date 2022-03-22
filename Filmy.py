@@ -9,7 +9,8 @@ class Movie:
         
     def play(self, views=1):    
         self.count_views += views
-        
+
+
 class Series(Movie):
     def __init__ (self, episode, season, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -35,24 +36,21 @@ def generate_views_xten ():
     i=0
     while i < 10:
         generate_views()
-        i+1
-
+        i+=1
 
 def get_movies():
     by_title = sorted(database, key=lambda x: x.title)    
     for element in by_title:
-        generate_views()
         element.play()
+        generate_views_xten()
         if isinstance(element, Movie):
             print(f"{element.title}, {element.year}, {element.genre}. Ilość wyświetleń: {element.count_views}.")
 
-# Powyżej funkcja isinstance uwzględnia dziedziczenie, więc wyświetla i filmy, i seriale.
-
 def get_series():
     by_title = sorted(database, key=lambda x: x.title)
-    for element in by_title:
-        generate_views()
+    for element in by_title:        
         element.play()
+        generate_views_xten()
         if isinstance(element, Series):
             print(f"Serial: {element.title}, {element.year}, {element.genre}, {element.episode}, {element.season}. Ilość wyświetleń: {element.count_views}.")
         
@@ -61,7 +59,17 @@ def search ():
     for element in database:
         if element.title == search:
             print(f"{element.title}, {element.year}, {element.genre}. Ilość wyświetleń: {element.count_views}.")
+        break
     else:
         print ("Unknown")
 
-generate_views_xten ()
+def top_titles():
+    top=[]
+    by_top = sorted(database, key=lambda x: x.count_views)    
+    for element in by_top:
+        element.play()
+        generate_views_xten()
+        if isinstance(element, Movie):
+            top.append ([f"{element.title}, {element.count_views}"])
+    print (top[-1])
+
